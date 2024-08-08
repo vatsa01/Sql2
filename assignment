@@ -22,3 +22,23 @@ select (case
             when id % 2 = 0 then id -1
             else id + 1
         end )as id, student from Seat order by id
+
+Problem Name: Tree Node
+
+# Write your MySQL query statement below
+select id, case
+            when p_id is null then 'Root'
+            when id in (select p_id from Tree) and p_id is not null then 'Inner'
+            else 'Leaf'
+            end as type 
+            from Tree
+
+# Write your MySQL query statement below
+select id , 'Root' as type from Tree
+where p_id is null
+union
+select id, 'Inner' as type from Tree
+where id in (select p_id from Tree where p_id is not null) and p_id is not null
+union
+select id, 'Leaf' as type from Tree
+where id not in (select p_id from Tree where p_id is not null) and p_id is not null
