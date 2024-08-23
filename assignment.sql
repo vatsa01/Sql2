@@ -1,4 +1,4 @@
-Problem Name: Rank Scores
+Problem 1: Rank Scores
 
 # Write your MySQL query statement below
 select score, dense_rank() over(order by score desc) as 'rank' from Scores
@@ -14,7 +14,7 @@ select s1.score, (select count(distinct s2.score) from Scores s2
 where s2.score >= s1.score) as 'rank'
 from Scores s1 order by s1.score desc
 
-Problem Name: Exchange Seats
+Problem 2: Exchange Seats
 
 # Write your MySQL query statement below
 select (case 
@@ -23,7 +23,7 @@ select (case
             else id + 1
         end )as id, student from Seat order by id
 
-Problem Name: Tree Node
+Problem 3: Tree Node
 
 # Write your MySQL query statement below
 select id, case
@@ -42,3 +42,12 @@ where id in (select p_id from Tree where p_id is not null) and p_id is not null
 union
 select id, 'Leaf' as type from Tree
 where id not in (select p_id from Tree where p_id is not null) and p_id is not null
+
+Problem 4 : Deparment Top 3 Salaries
+
+select dname as Department, name as Employee, salary as Salary
+from (select d.name as dname, e.name, e.salary,
+    dense_rank() over(partition by d.name order by e.salary desc) as rnk
+    from Employee e join Department d on e.departmentId = d.id)
+as cte
+where rnk <= 3
